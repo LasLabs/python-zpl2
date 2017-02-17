@@ -1,0 +1,42 @@
+addons:
+  apt:
+    packages:
+      - expect-dev
+
+language: python
+
+python:
+  - "2.7"
+
+virtualenv:
+  system_site_packages: true
+
+env:
+  global:
+    - PROJECT="zpl2"
+    - VERSION="1.0.0"
+    - RELEASE="1.0.0"
+    - AUTHOR_NAME="Sylvain Garancher"
+    - PYPI_USER="syleam"
+    # Generate the below per repo with the following:
+    #   travis encrypt 'PYPI_PASSWORD="$PYPI_PASSWORD"' -r LasLabs/repo-name
+    # - secure: "$PYPI_TOKEN"
+    # Generate the below per repo with the following:
+    #   travis encrypt 'GH_TOKEN="$GITHUB_TOKEN"' -r LasLabs/repo-name
+    # - secure: "$GH_TOKEN"
+  matrix:
+    - TESTS="1"
+    - LINT_CHECK="1"
+    # - PYPI="1"
+    # - DOCS="1"
+
+install:
+  - git clone --depth=1 https://github.com/LasLabs/python-quality-tools.git ${HOME}/python-quality-tools
+  - export PATH=${HOME}/python-quality-tools/travis:${PATH}
+  - travis_install
+
+script:
+  - travis_run
+
+after_success:
+  - travis_after_success
